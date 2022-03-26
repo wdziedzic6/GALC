@@ -11,14 +11,11 @@ class GALC:
     def classify(self, training_data, test_data, classifier_name):
         if classifier_name == "KNeighboursClassifier":
             print("")
-            # classifier = KNeighboursClassifier()
-            # classifier.classify(training_data, test_data)
+            # KNeighboursClassifier().classify(training_data, test_data)
         elif classifier_name == "NaiveBayesianClassifier":
-            classifier = NaiveBayesianClassifier()
-            classifier.classify(training_data, test_data)
+            NaiveBayesianClassifier().classify(training_data, test_data)
         elif classifier_name == "DecisionTreeClassifier":
-            classifier = DecisionTreeClassifier()
-            classifier.classify(training_data, test_data)
+            DecisionTreeClassifier().classify(training_data, test_data)
 
 
 def main():
