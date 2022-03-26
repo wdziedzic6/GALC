@@ -25,7 +25,7 @@ labels_train = datasetTrain.iloc[:,[noColumnTrain-1]]
 features_test = datasetTest.iloc[:,:noColumnTrain-1]
 
 
-model = KNeighborsClassifier(n_neighbors=3,metric='euclidean')
+model = KNeighborsClassifier(n_neighbors=50,metric='euclidean')
 model.fit(features_train, np.ravel(labels_train))
 
 
