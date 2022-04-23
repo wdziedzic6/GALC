@@ -25,8 +25,8 @@ class GALC:
             classifier = DecisionTreeClassifier()
 
         # Dokonanie klasyfikacji dla kazdego ze wskazanych zakresow lokalnych
-        for range in local_ranges:
-            classification_result = classifier.classify(training_data, test_data, range)
+        for percentage_range in local_ranges:
+            classification_result = classifier.classify(training_data, test_data, percentage_range)
             # Dodanie rezultatu klasyfikacji dla obslugiwanego zakrezu do tablicy agregujacej wyniki
             results_set.append(classification_result)
 
@@ -40,7 +40,6 @@ class GALC:
         for i in range(len(results_set)):
             print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][2])
             print("- Dokladnosc klasyfikacji:", results_set[i][3])
-
 
 
 # Glowna metoda, gdzie wprowadzane zostaja parametry klasyfikacji:
@@ -58,4 +57,5 @@ if __name__ == "__main__":
 
 
 # Struktura obiektu zwracanego w wyniku klasyfikacji:
-# [tablica_przypisanych etykiet, tablica_obiektow_z_rzeczywistymi_etykietami, procent_zakresu_treningowego, wyznaczona_dokladnosc]
+# [tablica_przypisanych etykiet, tablica_obiektow_z_rzeczywistymi_etykietami, procent_zakresu_treningowego,
+# wyznaczona_dokladnosc]

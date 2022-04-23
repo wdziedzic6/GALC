@@ -8,7 +8,7 @@ class KNeighboursClassifier:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data, range):
+    def classify(self, training_data, test_data, percentage_range):
         print("Start classification")
 
 
