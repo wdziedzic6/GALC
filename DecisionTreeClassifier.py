@@ -2,5 +2,5 @@ class DecisionTreeClassifier:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data):
+    def classify(self, training_data, test_data, range):
         print("Start classification")
