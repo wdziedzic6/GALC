@@ -1,7 +1,8 @@
 # GALC - Global and Local Classifier
-from KNeighboursClassifier import KNeighboursClassifier
-from NaiveBayesianClassifier import NaiveBayesianClassifier
-from DecisionTreeClassifier import DecisionTreeClassifier
+from classifiers.KNeighboursClassifier import KNeighboursClassifier
+from classifiers.NaiveBayesianClassifier import NaiveBayesianClassifier
+from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
+import utils
 
 
 class GALC:
@@ -17,7 +18,6 @@ class GALC:
         classifier = None
         # Wyznaczenie rodzaju klasyfikatora na podstawie parametru classifier_name
         if classifier_name == "KNeighboursClassifier":
-            print("")
             classifier = KNeighboursClassifier()
         elif classifier_name == "NaiveBayesianClassifier":
             classifier = NaiveBayesianClassifier()
@@ -40,15 +40,20 @@ class GALC:
         for i in range(len(results_set)):
             print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][2])
             print("- Dokladnosc klasyfikacji:", results_set[i][3])
+            print("")
 
 
 # Glowna metoda, gdzie wprowadzane zostaja parametry klasyfikacji:
 # zbior treningowy, zbior testowy, nazwa klasyfikatora, tablica zakresow klasyfikacji lokalnych
 def main():
     classifier = GALC()
-    # classifier.classify("winequality-red_train", "winequality-red_test", "KNeighboursClassifier", [20, 40, 60, 80])
-    classifier.classify("winequality-red_train", "winequality-red_test", "NaiveBayesianClassifier", [20, 40, 60, 80])
-    # classifier.classify("winequality-red_train", "winequality-red_test", "DecisionTreeClassifier", [20, 40, 60, 80])
+
+    training_data_path = "data\winequality-red_train.csv"
+    test_data_path = "data\winequality-red_test.csv"
+
+    # classifier.classify(training_data_path, test_data_path, "KNeighboursClassifier", [20, 40, 60, 80])
+    # classifier.classify(training_data_path, test_data_path, "NaiveBayesianClassifier", [20, 40, 60, 80])
+    classifier.classify(training_data_path, test_data_path, "DecisionTreeClassifier", [20, 40, 60, 80])
 
 
 # Uruchomienie skryptu
