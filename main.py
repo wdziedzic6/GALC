@@ -38,6 +38,7 @@ class GALC:
         # ETAP PODSUMOWANIA WYNIKOW
 
         for i in range(len(results_set)):
+            print("")
             print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][2])
             print("- Dokladnosc klasyfikacji:", results_set[i][3])
             print("")

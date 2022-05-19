@@ -27,10 +27,10 @@ def get_objects(data_set_with_headers):
 
 
 def get_objects_without_decision(data_set_without_headers):
-    print("Do zaimplementowania")
+    # print("Do zaimplementowania")
     return []
 
 
 def get_decisions_set(data_set_without_headers):
-    print("Do zaimplementowania")
+    # print("Do zaimplementowania")
     return []
