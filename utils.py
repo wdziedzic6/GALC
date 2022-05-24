@@ -34,3 +34,6 @@ def get_objects_without_decision(data_set_without_headers):
 def get_decisions_set(data_set_without_headers):
     # print("Do zaimplementowania")
     return []
+
+def prepare_the_most_similar_data(metrics, percentage_of_objects, train_set, current_obj):
+    return []

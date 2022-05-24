@@ -11,31 +11,10 @@ class DecisionTreeClassifier:
 
     def classify(self, training_data, test_data, percentage_range):
         print("Start classification with DecisionTreeClassifier")
-        tr_dataset = pd.read_csv(training_data)
-        # test_dataset = pd.read_csv(test_data)
-        print("tr_dataset=", tr_dataset)
-        # print("test_dataset=", test_dataset)
-
-        noColumn = tr_dataset.shape[1]  # Ustalenie liczby kolumn w danych
-        features = tr_dataset.iloc[:, :noColumn - 1]  # Wyodrębnienie częśći warunkowej danych
-        labels = tr_dataset.iloc[:, [noColumn - 1]]  # Wyodrębnienie kolumny decyzyjnej
-
-        datasets = train_test_split(features, labels, test_size=0.6, random_state=1234)
-        features_train = datasets[0]
-        features_test = datasets[1]
-        labels_train = datasets[2]
-        labels_test = datasets[3]
-
-        print("features_train=", features_train)
-        print("features_test=", features_test)
-        print("labels_train=", labels_train)
-        print("labels_test=", labels_test)
-
-        objects_with_headers = utils.get_objects(training_data)
-        objects_without_headers = objects_with_headers[1:]
-
-        test_dataset = utils.get_objects(test_data)
-        print("test_dataset=", test_dataset)
+        print("")
+        test_dataset_dataframe = pd.read_csv(test_data)
+        test_objects_with_headers = utils.get_objects(test_data)
+        test_objects_without_headers = test_objects_with_headers[1:]
 
         my_criterion = "gini"  # Kryterium podziału węzła drzewa podczas budowy drzewa: 'gini', 'entropy'
         my_max_depth = 5
@@ -52,25 +31,27 @@ class DecisionTreeClassifier:
                                        min_impurity_decrease=my_min_impurity_decrease)
 
         decisions_array = []  # tablica do przechowywania wyznaczonych obiektom testowym atrybutów decyzyjnych
-
-        for i in range(len(test_dataset)):
+        print("len(test_objects_without_headers)=", len(test_objects_without_headers))
+        for i in range(len(test_objects_without_headers)):
             # training_set_for_object = self.prepare_the_most_similar_data()
             # Tu musi zostać zaimplementowane wybranie najbardziej podobnych obiektów do testowego (nowy zbiór treningowy)
 
             print("Analizowany obiekt #=", i)
-            print("len(test_dataset)=", len(test_dataset))
+            print("test_objects_without_headers[i]=", test_objects_without_headers[i])
 
-            training_set_for_object_without_decision = utils.get_objects_without_decision(objects_without_headers)
-            decisions_set_for_object = utils.get_decisions_set(objects_without_headers)
+            tr_dataset_dataframe = pd.read_csv(training_data)
+            no_column = tr_dataset_dataframe.shape[1]  # Ustalenie liczby kolumn w danych
+            train_features = tr_dataset_dataframe.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
+            train_labels = tr_dataset_dataframe.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
 
-            conditional_attributes = training_set_for_object_without_decision
-            decision_attributes = decisions_set_for_object
+            model.fit(train_features, np.ravel(train_labels))
 
-            # model.fit(training_set_for_object_without_decision, np.ravel(decisions_set_for_object))
-            model.fit(features_train, np.ravel(labels_train))
+            current_test_object = test_dataset_dataframe.iloc[[i]]
+            no_column = current_test_object.shape[1]
+            current_test_object_features = current_test_object.iloc[:, :no_column - 1]
 
-            labels_predicted = model.predict(features_test) # Generowanie decyzji dla obiektu testowego
-            print("labels_predicted=", labels_predicted)
+            labels_predicted = model.predict(current_test_object_features) # Generowanie decyzji dla obiektu testowego
+            print("label_predicted =", labels_predicted)
 
         accuracy_of_classification = 0  # Tu wyznaczyć dokładność klasyfikacji
         returned_object = [decisions_array, test_data, percentage_range, accuracy_of_classification]
