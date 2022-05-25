@@ -15,6 +15,7 @@ class DecisionTreeClassifier:
         test_dataset_dataframe = pd.read_csv(test_data)
         test_objects_with_headers = utils.get_objects(test_data)
         test_objects_without_headers = test_objects_with_headers[1:]
+        real_labels = utils.get_labels(test_objects_without_headers)
 
         my_criterion = "gini"  # Kryterium podziału węzła drzewa podczas budowy drzewa: 'gini', 'entropy'
         my_max_depth = 5
@@ -33,13 +34,12 @@ class DecisionTreeClassifier:
         decisions_array = []  # tablica do przechowywania wyznaczonych obiektom testowym atrybutów decyzyjnych
         print("len(test_objects_without_headers)=", len(test_objects_without_headers))
         for i in range(len(test_objects_without_headers)):
-            # training_set_for_object = self.prepare_the_most_similar_data()
-            # Tu musi zostać zaimplementowane wybranie najbardziej podobnych obiektów do testowego (nowy zbiór treningowy)
+            utils.prepare_the_most_similar_data("METRYKA_EUKLIDESOWA", percentage_range, training_data, test_objects_without_headers[i])
 
             print("Analizowany obiekt #=", i)
             print("test_objects_without_headers[i]=", test_objects_without_headers[i])
 
-            tr_dataset_dataframe = pd.read_csv(training_data)
+            tr_dataset_dataframe = pd.read_csv("data/the_most_similar_objects.csv")
             no_column = tr_dataset_dataframe.shape[1]  # Ustalenie liczby kolumn w danych
             train_features = tr_dataset_dataframe.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
             train_labels = tr_dataset_dataframe.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
@@ -50,16 +50,15 @@ class DecisionTreeClassifier:
             no_column = current_test_object.shape[1]
             current_test_object_features = current_test_object.iloc[:, :no_column - 1]
 
-            labels_predicted = model.predict(current_test_object_features) # Generowanie decyzji dla obiektu testowego
-            print("label_predicted =", labels_predicted)
+            label_predicted = model.predict(current_test_object_features) # Generowanie decyzji dla obiektu testowego
+            print("label_predicted =", label_predicted[0])
+            decisions_array.append(label_predicted[0])
 
-        accuracy_of_classification = 0  # Tu wyznaczyć dokładność klasyfikacji
+        number_of_correct_labels = utils.get_accuracy(decisions_array, real_labels)
+        accuracy_of_classification = number_of_correct_labels/len(test_objects_without_headers)
         returned_object = [decisions_array, test_data, percentage_range, accuracy_of_classification]
 
         return returned_object
-
-    def prepare_the_most_similar_data(self):
-        return []
 
 
 # Struktura obiektu zwracanego w wyniku klasyfikacji:
