@@ -11,12 +11,11 @@ class DecisionTreeClassifier:
 
     def classify(self, training_data, test_data, percentage_range):
         print("Start classification with DecisionTreeClassifier")
-
-        # objects_with_headers = utils.get_objects(training_data)
-        # objects_without_headers = objects_with_headers[1:]
-
-        test_dataset = utils.get_objects(test_data)
-        test_dataset_pd = pd.read_csv(test_data)
+        print("")
+        test_dataset_dataframe = pd.read_csv(test_data)
+        test_objects_with_headers = utils.get_objects(test_data)
+        test_objects_without_headers = test_objects_with_headers[1:]
+        real_labels = utils.get_labels(test_objects_without_headers)
 
         my_criterion = "gini"  # Kryterium podziału węzła drzewa podczas budowy drzewa: 'gini', 'entropy'
         my_max_depth = 5
@@ -33,54 +32,33 @@ class DecisionTreeClassifier:
                                        min_impurity_decrease=my_min_impurity_decrease)
 
         decisions_array = []  # tablica do przechowywania wyznaczonych obiektom testowym atrybutów decyzyjnych
+        print("len(test_objects_without_headers)=", len(test_objects_without_headers))
+        for i in range(len(test_objects_without_headers)):
+            utils.prepare_the_most_similar_data("METRYKA_EUKLIDESOWA", percentage_range, training_data, test_objects_without_headers[i])
 
-        for i in range(len(test_dataset)):
-            # training_set_for_object = self.prepare_the_most_similar_data()
-            # Tu musi zostać zaimplementowane wybranie najbardziej podobnych obiektów do testowego (nowy zbiór treningowy)
+            print("Analizowany obiekt #=", i)
+            print("test_objects_without_headers[i]=", test_objects_without_headers[i])
 
-            print("Analizowany obiekt #", i)
-            print("Atrybuty test_dataset[i]:", test_dataset[i])
+            tr_dataset_dataframe = pd.read_csv("data/the_most_similar_objects.csv")
+            no_column = tr_dataset_dataframe.shape[1]  # Ustalenie liczby kolumn w danych
+            train_features = tr_dataset_dataframe.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
+            train_labels = tr_dataset_dataframe.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
 
-            tr_dataset = pd.read_csv(training_data)
-            # tu trzeba zrobić zwrócenie zbioru treningowego najbardizej podobnych obiektów do obiektu testowego
-            # i musi być rozgraniczenie na zmienną z samymi tylko atrybutami warunkowymi i na zmienną
-            # z samymi tylko etykietami
-            # te zmienne potem posłużą w metodzie fit do zbudowania klasyfikatora
+            model.fit(train_features, np.ravel(train_labels))
 
-            no_column = tr_dataset.shape[1]  # Ustalenie liczby kolumn w danych
-            features = tr_dataset.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
-            labels = tr_dataset.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
+            current_test_object = test_dataset_dataframe.iloc[[i]]
+            no_column = current_test_object.shape[1]
+            current_test_object_features = current_test_object.iloc[:, :no_column - 1]
 
-            datasets = train_test_split(features, labels, test_size=0.6, random_state=1234)
-            features_train = datasets[0]
-            features_test = datasets[1]
-            labels_train = datasets[2]
-            labels_test = datasets[3]
+            label_predicted = model.predict(current_test_object_features) # Generowanie decyzji dla obiektu testowego
+            print("label_predicted =", label_predicted[0])
+            decisions_array.append(label_predicted[0])
 
-            # training_set_for_object_without_decision = utils.get_objects_without_decision(objects_without_headers)
-            # decisions_set_for_object = utils.get_decisions_set(objects_without_headers)
-            # conditional_attributes = training_set_for_object_without_decision
-            # decision_attributes = decisions_set_for_object
-
-            # model.fit(training_set_for_object_without_decision, np.ravel(decisions_set_for_object))
-            model.fit(features_train, np.ravel(labels_train))
-
-            print("test test_object_data_frame: ", test_object_data_frame)
-            test_object_data_frame = test_dataset_pd.iloc[[i], :]
-            print("test_object_data_frame: ", test_object_data_frame)
-            print("type(test_object_data_frame): ", type(test_object_data_frame))
-
-            labels_predicted = model.predict(test_object_data_frame) # Generowanie decyzji dla obiektu testowego
-            # labels_predicted = model.predict(features_test) # Generowanie decyzji dla obiektu testowego
-            print("labels_predicted=", labels_predicted)
-
-        accuracy_of_classification = 0  # Tu wyznaczyć dokładność klasyfikacji
+        number_of_correct_labels = utils.get_accuracy(decisions_array, real_labels)
+        accuracy_of_classification = number_of_correct_labels/len(test_objects_without_headers)
         returned_object = [decisions_array, test_data, percentage_range, accuracy_of_classification]
 
         return returned_object
-
-    def prepare_the_most_similar_data(self):
-        return []
 
 
 # Struktura obiektu zwracanego w wyniku klasyfikacji:

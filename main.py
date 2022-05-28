@@ -50,7 +50,7 @@ def main():
     classifier = GALC()
 
     training_data_path = "data\winequality-red_train.csv"
-    test_data_path = "data\winequality-red_test.csv"
+    test_data_path = "data\winequality-red_decision.csv"
 
     # classifier.classify(training_data_path, test_data_path, "KNeighboursClassifier", [20, 40, 60, 80])
     # classifier.classify(training_data_path, test_data_path, "NaiveBayesianClassifier", [20, 40, 60, 80])
