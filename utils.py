@@ -93,10 +93,18 @@ def calculate_the_similarity_using_manhattan_metric(current_obj, train_object):
     return distance
 
 
-def get_accuracy(predicted_labels, real_labels):
+def calculate_the_similarity_using_cosine_metric(current_obj, train_object):
+    distance = 0
+    # for i in range(len(current_obj)):
+    #     distance = distance + abs(float(current_obj[i]) - float(train_object[i]))
+    # ta funkcja do zrobienia
+    return distance
+
+
+def get_number_of_correct_labels(predicted_labels, real_labels):
     number_of_correct_labels = 0
     for i in range(len(predicted_labels)):
-        if predicted_labels[i] == real_labels[i]:
+        if str(predicted_labels[i]) == str(real_labels[i]):
             number_of_correct_labels = number_of_correct_labels + 1
 
     return number_of_correct_labels

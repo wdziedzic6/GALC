@@ -9,7 +9,7 @@ class DecisionTreeClassifier:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data, percentage_range):
+    def classify(self, training_data, test_data, percentage_range, metrick):
         print("Start classification with DecisionTreeClassifier")
         print("")
         test_dataset_dataframe = pd.read_csv(test_data)
@@ -32,12 +32,11 @@ class DecisionTreeClassifier:
                                        min_impurity_decrease=my_min_impurity_decrease)
 
         decisions_array = []  # tablica do przechowywania wyznaczonych obiektom testowym atrybutów decyzyjnych
-        print("len(test_objects_without_headers)=", len(test_objects_without_headers))
         for i in range(len(test_objects_without_headers)):
-            utils.prepare_the_most_similar_data("METRYKA_EUKLIDESOWA", percentage_range, training_data, test_objects_without_headers[i])
+            utils.prepare_the_most_similar_data(metrick, percentage_range, training_data, test_objects_without_headers[i])
 
             print("Analizowany obiekt #=", i)
-            print("test_objects_without_headers[i]=", test_objects_without_headers[i])
+            print("Wartosci atrybutow:", test_objects_without_headers[i])
 
             tr_dataset_dataframe = pd.read_csv("data/the_most_similar_objects.csv")
             no_column = tr_dataset_dataframe.shape[1]  # Ustalenie liczby kolumn w danych
@@ -50,13 +49,16 @@ class DecisionTreeClassifier:
             no_column = current_test_object.shape[1]
             current_test_object_features = current_test_object.iloc[:, :no_column - 1]
 
-            label_predicted = model.predict(current_test_object_features) # Generowanie decyzji dla obiektu testowego
-            print("label_predicted =", label_predicted[0])
+            label_predicted = model.predict(current_test_object_features)  # Generowanie decyzji dla obiektu testowego
+            # print("label_predicted =", label_predicted[0])
             decisions_array.append(label_predicted[0])
 
-        number_of_correct_labels = utils.get_accuracy(decisions_array, real_labels)
+        number_of_correct_labels = utils.get_number_of_correct_labels(decisions_array, real_labels)
         accuracy_of_classification = number_of_correct_labels/len(test_objects_without_headers)
-        returned_object = [decisions_array, test_data, percentage_range, accuracy_of_classification]
+
+        print("number_of_correct_labels:", number_of_correct_labels)
+        print("")
+        returned_object = [decisions_array, real_labels, percentage_range, accuracy_of_classification]
 
         return returned_object
 

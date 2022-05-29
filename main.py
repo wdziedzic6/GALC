@@ -9,7 +9,7 @@ class GALC:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data, classifier_name, local_ranges):
+    def classify(self, training_data, test_data, classifier_name, local_ranges, metrick):
 
         # ETAP KLASYFIKACJI
 
@@ -26,12 +26,12 @@ class GALC:
 
         # Dokonanie klasyfikacji dla kazdego ze wskazanych zakresow lokalnych
         for percentage_range in local_ranges:
-            classification_result = classifier.classify(training_data, test_data, percentage_range)
+            classification_result = classifier.classify(training_data, test_data, percentage_range, metrick)
             # Dodanie rezultatu klasyfikacji dla obslugiwanego zakrezu do tablicy agregujacej wyniki
             results_set.append(classification_result)
 
         # Dokonanie klasyfikacji globalnej (brane pod uwage 100% obiektow treningowych)
-        classification_result = classifier.classify(training_data, test_data, 100)
+        classification_result = classifier.classify(training_data, test_data, 100, metrick)
         # Dodanie rezultatu klasyfikacji globalnej do tablicy agregujacej wyniki
         results_set.append(classification_result)
 
@@ -41,6 +41,7 @@ class GALC:
             print("")
             print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][2])
             print("- Dokladnosc klasyfikacji:", results_set[i][3])
+            print("Wyniki:", results_set[i])
             print("")
 
 
@@ -52,9 +53,9 @@ def main():
     training_data_path = "data\winequality-red_train.csv"
     test_data_path = "data\winequality-red_decision.csv"
 
-    # classifier.classify(training_data_path, test_data_path, "KNeighboursClassifier", [20, 40, 60, 80])
-    # classifier.classify(training_data_path, test_data_path, "NaiveBayesianClassifier", [20, 40, 60, 80])
-    classifier.classify(training_data_path, test_data_path, "DecisionTreeClassifier", [20, 40, 60, 80])
+    # classifier.classify(training_data_path, test_data_path, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(training_data_path, test_data_path, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    classifier.classify(training_data_path, test_data_path, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
 
 
 # Uruchomienie skryptu
