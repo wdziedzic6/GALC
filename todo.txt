@@ -1,0 +1,10 @@
+Dla kazdego wyliczanego procentu lokalnoci w petli zrobic crosswalidacje krzyzowa (10 prob)
+
+zbior treningowy miedzy 100 a 1000 obiektow -> cross-walidsacja
+
+powyzej 1000 -> train and test
+
+
+dla kazdej proby policzyc dokiladnosc i potem obliczyc sredni dokladnosc i odchylenie standardowe z tych dokladnosci
+i przypisac wyniki dla okreslonego wyliczanego procentu lokalnosci
+
