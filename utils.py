@@ -46,7 +46,7 @@ def prepare_the_most_similar_data(metrics, percentage_of_objects, full_train_set
 
     for i in range(len(train_objects_without_headers)):
         similarity_index = calculate_the_similarity(metrics, current_obj, train_objects_without_headers[i])
-        indexes_and_similarities.append({'index':i, 'similarity':similarity_index})
+        indexes_and_similarities.append({'index': i, 'similarity': similarity_index})
 
     indexes_and_similarities.sort(key=sort_by_similarity)
     number_of_all_objects = len(train_objects_without_headers)
@@ -67,13 +67,13 @@ def sort_by_similarity(e):
     return e['similarity']
 
 
-def calculate_the_similarity(metrics, current_obj, train_objects_without_headers):
+def calculate_the_similarity(metrics, current_obj, train_object):
     if metrics == "METRYKA_EUKLIDESOWA":
-        return calculate_the_similarity_using_euclidean_metric(current_obj, train_objects_without_headers)
+        return calculate_the_similarity_using_euclidean_metric(current_obj, train_object)
     elif metrics == "METRYKA_MANHATTAN":
-        return calculate_the_similarity_using_manhattan_metric(current_obj, train_objects_without_headers)
+        return calculate_the_similarity_using_manhattan_metric(current_obj, train_object)
     elif metrics == "METRYKA_KOSINUSOWA":
-        print("Oblicznie z metryki kosinusowej")
+        return calculate_the_similarity_using_cosine_metric(current_obj, train_object)
 
 
 def calculate_the_similarity_using_euclidean_metric(current_obj, train_object):
@@ -94,11 +94,22 @@ def calculate_the_similarity_using_manhattan_metric(current_obj, train_object):
 
 
 def calculate_the_similarity_using_cosine_metric(current_obj, train_object):
-    distance = 0
-    # for i in range(len(current_obj)):
-    #     distance = distance + abs(float(current_obj[i]) - float(train_object[i]))
-    # ta funkcja do zrobienia
-    return distance
+
+    sum_of_products_of_attributes = 0
+    for i in range(len(current_obj)):
+        sum_of_products_of_attributes = sum_of_products_of_attributes + (float(current_obj[i]) - float(train_object[i]))
+
+    sum_of_squares_of_test_obj_attributes = 0
+    for i in range(len(current_obj)):
+        sum_of_squares_of_test_obj_attributes = sum_of_squares_of_test_obj_attributes + (float(current_obj[i]) ** 2)
+
+    sum_of_squares_of_train_obj_attributes = 0
+    for i in range(len(train_object)):
+        sum_of_squares_of_train_obj_attributes = sum_of_squares_of_train_obj_attributes + (float(train_object[i]) ** 2)
+
+    denominator = math.sqrt(sum_of_squares_of_test_obj_attributes) * math.sqrt(sum_of_squares_of_train_obj_attributes)
+
+    return 1 - (sum_of_products_of_attributes / denominator)
 
 
 def get_number_of_correct_labels(predicted_labels, real_labels):

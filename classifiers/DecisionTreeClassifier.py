@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 import utils
 from sklearn import tree
-from csv import DictReader  # Import modułu do przetwarzania plików CSV
-from sklearn.model_selection import train_test_split
+
 
 class DecisionTreeClassifier:
     def __init__(self):

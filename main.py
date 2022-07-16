@@ -2,7 +2,6 @@
 from classifiers.KNeighboursClassifier import KNeighboursClassifier
 from classifiers.NaiveBayesianClassifier import NaiveBayesianClassifier
 from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
-import utils
 
 
 class GALC:
