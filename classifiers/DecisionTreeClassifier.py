@@ -8,7 +8,7 @@ class DecisionTreeClassifier:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data, percentage_range, metrick):
+    def classify(self, training_data, test_data, percentage_range, metrics):
         print("Start classification with DecisionTreeClassifier")
         print("")
         test_dataset_dataframe = pd.read_csv(test_data)
@@ -32,7 +32,7 @@ class DecisionTreeClassifier:
 
         decisions_array = []  # tablica do przechowywania wyznaczonych obiektom testowym atrybutów decyzyjnych
         for i in range(len(test_objects_without_headers)):
-            utils.prepare_the_most_similar_data(metrick, percentage_range, training_data, test_objects_without_headers[i])
+            utils.prepare_the_most_similar_data(metrics, percentage_range, training_data, test_objects_without_headers[i])
 
             print("Analizowany obiekt #=", i)
             print("Wartosci atrybutow:", test_objects_without_headers[i])

@@ -1,67 +1,67 @@
 # GALC - Global and Local Classifier
-from classifiers.KNeighboursClassifier import KNeighboursClassifier
-from classifiers.NaiveBayesianClassifier import NaiveBayesianClassifier
-from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
+from TrainAndTestManager import TrainAndTestManager
+from CrossValidationManager import CrossValidationManager
+import pandas as pd
 
 
 class GALC:
     def __init__(self):
         pass
 
-    def classify(self, training_data, test_data, classifier_name, local_ranges, metrick):
+    def classify(self, data_set, classifier_name, local_ranges, metrics):
 
         # ETAP KLASYFIKACJI
 
         # tablica przechowujaca wyniki poszczegolnych klasyfikacji
         results_set = []
-        classifier = None
-        # Wyznaczenie rodzaju klasyfikatora na podstawie parametru classifier_name
-        if classifier_name == "KNeighboursClassifier":
-            classifier = KNeighboursClassifier()
-        elif classifier_name == "NaiveBayesianClassifier":
-            classifier = NaiveBayesianClassifier()
-        elif classifier_name == "DecisionTreeClassifier":
-            classifier = DecisionTreeClassifier()
+        number_of_objects = len(pd.read_csv(data_set)) - 1
+        classification_manager = None
+        if number_of_objects <= 1000:
+            classification_manager = CrossValidationManager()
+        else:
+            classification_manager = TrainAndTestManager()
 
-        # Dokonanie klasyfikacji dla kazdego ze wskazanych zakresow lokalnych
+        # Dokonanie serii klasyfikacji dla kazdego ze wskazanych zakresow lokalnych
         for percentage_range in local_ranges:
-            classification_result = classifier.classify(training_data, test_data, percentage_range, metrick)
+            classification_result = classification_manager.execute_a_series_of_classifications(data_set,
+                                                                                               classifier_name,
+                                                                                               percentage_range,
+                                                                                               metrics)
             # Dodanie rezultatu klasyfikacji dla obslugiwanego zakrezu do tablicy agregujacej wyniki
             results_set.append(classification_result)
 
         # Dokonanie klasyfikacji globalnej (brane pod uwage 100% obiektow treningowych)
-        classification_result = classifier.classify(training_data, test_data, 100, metrick)
+        classification_result = classification_manager.execute_a_series_of_classifications(data_set, classifier_name,
+                                                                                           100, metrics)
         # Dodanie rezultatu klasyfikacji globalnej do tablicy agregujacej wyniki
         results_set.append(classification_result)
 
         # ETAP PODSUMOWANIA WYNIKOW
 
+        # Struktura obiektu zwracanego w wyniku klasyfikacji w danym zakresie lokalności:
+        # [procent_zakresu_treningowego, średnia dokładność, odchylenie standardowe]
+
         for i in range(len(results_set)):
             print("")
-            print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][2])
-            print("- Dokladnosc klasyfikacji:", results_set[i][3])
-            print("Wyniki:", results_set[i])
+            print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][0])
+            print("- Średnia dokladnosc klasyfikacji:", results_set[i][1])
+            print("- Odchylenie standardowe klasyfikacji:", results_set[i][2])
             print("")
 
 
 # Glowna metoda, gdzie wprowadzane zostaja parametry klasyfikacji:
-# zbior treningowy, zbior testowy, nazwa klasyfikatora, tablica zakresow klasyfikacji lokalnych
+# zbior danych z decyzją (ścieżka), nazwa klasyfikatora, tablica zakresow klasyfikacji lokalnych oraz metryka
 def main():
     classifier = GALC()
 
-    training_data_path = "data\winequality-red_train.csv"
-    test_data_path = "data\winequality-red_decision.csv"
+    data_set = "data\winequality-red_train.csv"
 
-    # classifier.classify(training_data_path, test_data_path, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(training_data_path, test_data_path, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    classifier.classify(training_data_path, test_data_path, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(data_set, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(data_set, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    classifier.classify(data_set, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
 
 
 # Uruchomienie skryptu
 if __name__ == "__main__":
     main()
 
-
-# Struktura obiektu zwracanego w wyniku klasyfikacji:
-# [tablica_przypisanych etykiet, tablica_obiektow_z_rzeczywistymi_etykietami, procent_zakresu_treningowego,
-# wyznaczona_dokladnosc]
