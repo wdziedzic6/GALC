@@ -44,7 +44,7 @@ class GALC:
         for i in range(len(results_set)):
             print("")
             print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][0])
-            print("- Średnia dokladnosc klasyfikacji:", results_set[i][1])
+            print("- Średnia dokladność klasyfikacji:", results_set[i][1])
             print("- Odchylenie standardowe klasyfikacji:", results_set[i][2])
             print("")
 
@@ -54,7 +54,9 @@ class GALC:
 def main():
     classifier = GALC()
 
-    data_set = "data\winequality-red_train.csv"
+    # data_set = "data\winequality-red_train.csv"
+    # data_set = "data\winequality-red_decision.csv"
+    data_set = "data\winequality-red_decision_v2.csv"
 
     # classifier.classify(data_set, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
     # classifier.classify(data_set, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")

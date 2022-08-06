@@ -57,11 +57,6 @@ class DecisionTreeClassifier:
 
         print("number_of_correct_labels:", number_of_correct_labels)
         print("")
-        returned_object = [decisions_array, real_labels, percentage_range, accuracy_of_classification]
 
-        return returned_object
-
-
-# Struktura obiektu zwracanego w wyniku klasyfikacji:
-# [tablica_przypisanych etykiet, tablica_obiektow_z_rzeczywistymi_etykietami, procent_zakresu_treningowego,
-# wyznaczona_dokladnosc]
+        # Zwracana jest dokładność klasyfikacji
+        return accuracy_of_classification

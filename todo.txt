@@ -1,10 +1,10 @@
-Dla kazdego wyliczanego procentu lokalnoci w petli zrobic crosswalidacje krzyzowa (10 prob)
+Dla kazdego wyliczanego procentu lokalnoci w petli zrobic 10 prób
 
-zbior treningowy miedzy 100 a 1000 obiektow -> cross-walidsacja
+zbior treningowy miedzy 100 a 1000 obiektów -> cross-walidacja
 powyzej 1000 -> train and test
 
 
-dla kazdej proby policzyc dokiladnosc i potem obliczyc sredni dokladnosc i odchylenie standardowe z tych dokladnosci
+dla kazdej proby policzyc dokładnosc i potem obliczyc srednia dokladnosc i odchylenie standardowe z tych dokladnosci
 i przypisac wyniki dla okreslonego wyliczanego procentu lokalnosci
 
 
@@ -21,5 +21,5 @@ W ramach klasyfikacji ma odbyć się 10 prób, czyli klasyfikowań obiektów, gd
 są wyznaczane ze zbioru podawanego na wejściu w zależności od liczebności tego zbioru
 (cross-walidacja lub train and test)
 Po każdej próbie należy zapisać wyznaczoną dokładność klasyfikacji. Dokładnośći z poszczególnych 10-ciu
-prób posłużądo wyliczenia średniej dokładnośći oraz odchylenia standardowego dla klasyfikacji na danym
+prób posłużą do wyliczenia średniej dokładnośći oraz odchylenia standardowego dla klasyfikacji na danym
 przedziale lokalności
