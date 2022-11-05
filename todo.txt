@@ -13,6 +13,7 @@ Według powyższego danymi wejściowymi są:
 - zbiór danych ze znanymi etykietami (decyzjami)
 - rodzaj klasyfikatora
 - przedziały lokalności
+- wykorzystywana metryka
 
 Dane wyjściowe: dla każdego przedziału lokalności wyznaczone średnia dokładność klasyfikacji
 oraz odchylenie standardowe z dokładności uzyskiwanych w tzw. próbach.

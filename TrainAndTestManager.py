@@ -20,8 +20,10 @@ class TrainAndTestManager:
 
         # tutaj jednego zbioru danych powinna powstać tablica zawierająca 10 obiektów,
         # po jednym dla każdej serii klasyfikacji.
-        # Do każdej serii klasyfikacji trafai obiekt, w którym pod indeksem 0 znajduje się zbiór treningowy,
+        # Do każdej serii klasyfikacji trafia obiekt, w którym pod indeksem 0 znajduje się zbiór treningowy,
         # a pod indeksem 1 zbiór testowy
+        # train and test ze zbioru wejsciowego tworzy treningowy i testowy na podstawie losowego przydziału
+        # według okreslonych proporcji np. 50-50, 60-40 lub 70-30
 
         for i in range(10):
             print("Klasyfikacja dla procentu lokalności " + percentage_range + ", seria nr " + i+1)
