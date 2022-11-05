@@ -22,11 +22,6 @@ class CrossValidationManager:
         elif classifier_name == "DecisionTreeClassifier":
             classifier = DecisionTreeClassifier()
 
-        # tutaj jednego zbioru danych powinna powstać tablica zawierająca 10 obiektów,
-        # po jednym dla każdej serii klasyfikacji.
-        # Do każdej serii klasyfikacji trafia obiekt, w którym pod indeksem 0 znajduje się zbiór treningowy,
-        # a pod indeksem 1 zbiór testowy
-
         # lista zawiertająca obiekty do testów (prób)
         # struktura obiektu: [ścieżka do zbioru treningowego, ścieżka do zbioru testowego]
         test_objects = self.get_cross_validation_objects(data_set)
