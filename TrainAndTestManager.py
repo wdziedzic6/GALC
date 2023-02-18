@@ -3,6 +3,8 @@ from classifiers.NaiveBayesianClassifier import NaiveBayesianClassifier
 from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
 import math
 import csv
+import copy
+import random
 
 
 class TrainAndTestManager:
@@ -20,8 +22,6 @@ class TrainAndTestManager:
         elif classifier_name == "DecisionTreeClassifier":
             classifier = DecisionTreeClassifier()
 
-        # tutaj jednego zbioru danych powinna powstać tablica zawierająca 10 obiektów,
-        # po jednym dla każdej serii klasyfikacji.
         # Do każdej serii klasyfikacji trafia obiekt, w którym pod indeksem 0 znajduje się zbiór treningowy,
         # a pod indeksem 1 zbiór testowy
         # train and test ze zbioru wejsciowego tworzy treningowy i testowy na podstawie losowego przydziału
@@ -29,15 +29,15 @@ class TrainAndTestManager:
 
         # lista zawiertająca obiekty do testów (prób)
         # struktura obiektu: [ścieżka do zbioru treningowego, ścieżka do zbioru testowego]
-        test_objects = self.get_train_and_test_objects(data_set)  # tu do zmiennej trzeba przypisać rezultat
-        # metody przygotowującej tablice obiektow z zbiorami danych dla poszczegolnych 10-ciu prób
+        test_objects = self.get_train_and_test_objects(data_set)
         test_results = []
 
         for i in range(10):
             training_data = test_objects[i][0]
             test_data = test_objects[i][1]
-            print("Klasyfikacja dla procentu lokalności " + percentage_range + ", seria nr " + i+1)
+            print("Klasyfikacja dla procentu lokalności " + str(percentage_range) + ", seria nr " + str(i+1))
             classification_result = classifier.classify(training_data, test_data, percentage_range, metrics)
+            test_results.append(classification_result)
 
         # Wyznaczenie średniej dokładności klasyfikacji
         sum = 0
@@ -56,7 +56,7 @@ class TrainAndTestManager:
         result_for_the_scope_of_locality = [percentage_range, average_accuracy, standard_deviation]
         return result_for_the_scope_of_locality
 
-    def get_train_and_test_objects(self, data_set):  # implementacja tej metody jest do przerobienia gdyz jest kopią z crossvalidation
+    def get_train_and_test_objects(self, data_set):
         # Utworzenie tablicy z obiektami (plus na początku header)
         objects = []
         with open(data_set, "r") as a_file:
@@ -66,36 +66,36 @@ class TrainAndTestManager:
                     ",")  # Utworzenie obiektu składającego się z atrybutów na podstawie zadanego separatora
                 objects.append(obj)
 
-        # Podział na 10 grup
+        # Utworzenie grup na których będzie możliwe wyselekcjonowanie obiektów do train and test
         groups = []
         objects_without_header = objects[1:]
-        separator = int((len(objects)-1) / 10)
-        start = 0
-        end = int(separator)
+        percentage_of_the_training_set = 60
+        number_of_training_objects = int((percentage_of_the_training_set * len(objects_without_header)) / 100)
 
         for i in range(10):
-            groups.append(objects_without_header[start:end])
-            start = start + separator
-            end = end + separator
+            group = copy.deepcopy(objects_without_header)
+            groups.append(group)
 
         # Zapis do plików odpowiednich danych i zwrócenie ścieżek z plikami w formie tablicy obiektów
         dataset_paths = []
         for i in range(10):
             paths = []
 
+            train_path = 'data_cases/train' + str(i) + '.csv'
+            with open(train_path, 'w', newline='') as f:
+                write = csv.writer(f)
+                write.writerow(objects[0])
+                limit = len(objects_without_header) - 1
+                for j in range(number_of_training_objects):
+                    randomly_selected_index = random.randint(0, limit)
+                    write.writerow(groups[i].pop(randomly_selected_index))
+                    limit = limit - 1
+
             test_path = 'data_cases/test' + str(i) + '.csv'
             with open(test_path, 'w', newline='') as f:
                 write = csv.writer(f)
                 write.writerow(objects[0])
                 write.writerows(groups[i])
-
-            train_path = 'data_cases/train' + str(i) + '.csv'
-            with open(train_path, 'w', newline='') as f:
-                write = csv.writer(f)
-                write.writerow(objects[0])
-                for j in range(10):
-                    if j != i:
-                        write.writerows(groups[j])
 
             paths.append(train_path)
             paths.append(test_path)
