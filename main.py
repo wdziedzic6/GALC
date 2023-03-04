@@ -60,8 +60,8 @@ def main():
     data_set = "data\winequality-red_decision_v2_bigger_version.csv"
 
     # classifier.classify(data_set, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(data_set, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    classifier.classify(data_set, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    classifier.classify(data_set, "NaiveBayesianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(data_set, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
 
 
 # Uruchomienie skryptu
