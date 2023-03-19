@@ -1,10 +1,8 @@
-from classifiers.KNeighboursClassifier import KNeighboursClassifier
-from classifiers.NaiveBayesianClassifier import NaiveBayesianClassifier
-from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
 import math
 import csv
 import copy
 import random
+import utils
 
 
 class TrainAndTestManager:
@@ -13,14 +11,7 @@ class TrainAndTestManager:
 
     def execute_a_series_of_classifications(self, data_set, classifier_name, percentage_range, metrics):
 
-        classifier = None
-        # Wyznaczenie rodzaju klasyfikatora na podstawie parametru classifier_name
-        if classifier_name == "KNeighboursClassifier":
-            classifier = KNeighboursClassifier()
-        elif classifier_name == "NaiveBayesianClassifier":
-            classifier = NaiveBayesianClassifier()
-        elif classifier_name == "DecisionTreeClassifier":
-            classifier = DecisionTreeClassifier()
+        classifier = utils.get_classifier(classifier_name)
 
         # Do każdej serii klasyfikacji trafia obiekt, w którym pod indeksem 0 znajduje się zbiór treningowy,
         # a pod indeksem 1 zbiór testowy

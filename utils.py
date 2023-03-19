@@ -1,6 +1,10 @@
 from csv import DictReader  # Import modułu do przetwarzania plików CSV
 import math
 import csv
+from classifiers.KNeighboursClassifier import KNeighboursClassifier
+from classifiers.NaiveBayesianGaussianClassifier import NaiveBayesianGaussianClassifier
+from classifiers.NaiveBayesianMultinominalClassifier import NaiveBayesianMultinominalClassifier
+from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
 
 
 def get_data_without_headers(data_set_with_headers):
@@ -127,3 +131,18 @@ def get_labels(test_objects_without_headers):
         labels.append(test_objects_without_headers[i][-1])
 
     return labels
+
+
+def get_classifier(classifier_name):
+    classifier = None
+    # Wyznaczenie rodzaju klasyfikatora na podstawie parametru classifier_name
+    if classifier_name == "KNeighboursClassifier":
+        classifier = KNeighboursClassifier()
+    elif classifier_name == "NaiveBayesianGaussianClassifier":
+        classifier = NaiveBayesianGaussianClassifier()
+    elif classifier_name == "NaiveBayesianMultinominalClassifier":
+        classifier = NaiveBayesianMultinominalClassifier()
+    elif classifier_name == "DecisionTreeClassifier":
+        classifier = DecisionTreeClassifier()
+
+    return classifier

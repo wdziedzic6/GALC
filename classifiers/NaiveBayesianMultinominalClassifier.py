@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
 import utils
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 
-class NaiveBayesianClassifier:
+
+class NaiveBayesianMultinominalClassifier:
     def __init__(self):
         pass
 
     def classify(self, training_data, test_data, percentage_range, metrics):
-        print("Start classification with NaiveBayesianClassifier")
+        print("Start classification with NaiveBayesianMultinominalClassifier")
         print("")
         test_dataset_dataframe = pd.read_csv(test_data)
         test_objects_with_headers = utils.get_objects(test_data)
@@ -27,7 +28,7 @@ class NaiveBayesianClassifier:
             train_features = tr_dataset_dataframe.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
             train_labels = tr_dataset_dataframe.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
 
-            model = GaussianNB()
+            model = MultinomialNB()
             model.fit(train_features, np.ravel(train_labels))  # Uczenie klasyfikatora na części treningowej
 
             current_test_object = test_dataset_dataframe.iloc[[i]]
