@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
 import utils
-from sklearn.linear_model import LogisticRegression
+from sklearn import svm
 
-class LogisticRegressionClassifier:
+class SupportVectorMachineClassifier:
     def __init__(self):
-      pass
+        pass
 
     def classify(self, training_data, test_data, percentage_range, metrics):
-        print("Start classification with LogisticRegressionClassifier")
+        print("Start classification with SupportVectorMachineClassifier")
         print("")
         test_dataset_dataframe = pd.read_csv(test_data)
         test_objects_with_headers = utils.get_objects(test_data)
@@ -27,7 +27,7 @@ class LogisticRegressionClassifier:
             train_features = tr_dataset_dataframe.iloc[:, :no_column - 1]  # Wyodrębnienie częśći warunkowej danych
             train_labels = tr_dataset_dataframe.iloc[:, [no_column - 1]]  # Wyodrębnienie kolumny decyzyjnej
 
-            model = LogisticRegression(solver='lbfgs', max_iter=5000)
+            model = svm.SVC(kernel='linear')
             model.fit(train_features, np.ravel(train_labels))  # Uczenie klasyfikatora na części treningowej
 
             current_test_object = test_dataset_dataframe.iloc[[i]]

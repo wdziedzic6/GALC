@@ -31,8 +31,10 @@ class GALC:
             results_set.append(classification_result)
 
         # Dokonanie klasyfikacji globalnej (brane pod uwage 100% obiektow treningowych)
-        classification_result = classification_manager.execute_a_series_of_classifications(data_set, classifier_name,
-                                                                                           100, metrics)
+        classification_result = classification_manager.execute_a_series_of_classifications(data_set,
+                                                                                           classifier_name,
+                                                                                           100,
+                                                                                           metrics)
         # Dodanie rezultatu klasyfikacji globalnej do tablicy agregujacej wyniki
         results_set.append(classification_result)
 
@@ -56,13 +58,17 @@ def main():
 
     # data_set = "data\winequality-red_train.csv"
     # data_set = "data\winequality-red_decision.csv"
-    # data_set = "data\winequality-red_decision_v2.csv"
-    data_set = "data\winequality-red_decision_v2_bigger_version.csv"
+    data_set = "data\winequality-red_decision_v2.csv"
+    # data_set = "data\winequality-red_decision_v2_bigger_version.csv"
 
     # classifier.classify(data_set, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
     # classifier.classify(data_set, "NaiveBayesianGaussianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    classifier.classify(data_set, "NaiveBayesianMultinominalClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(data_set, "NaiveBayesianMultinominalClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
     # classifier.classify(data_set, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    # classifier.classify(data_set, "LogisticRegressionClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    classifier.classify(data_set, "SupportVectorMachineClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+
+
 
 
 # Uruchomienie skryptu

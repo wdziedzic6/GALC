@@ -4,7 +4,11 @@ import csv
 from classifiers.KNeighboursClassifier import KNeighboursClassifier
 from classifiers.NaiveBayesianGaussianClassifier import NaiveBayesianGaussianClassifier
 from classifiers.NaiveBayesianMultinominalClassifier import NaiveBayesianMultinominalClassifier
+from classifiers.NaiveBayesianMultinominalClassifier import NaiveBayesianMultinominalClassifier
 from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
+from classifiers.DecisionTreeClassifier import DecisionTreeClassifier
+from classifiers.LogisticRegressionClassifier import LogisticRegressionClassifier
+from classifiers.SupportVectorMachineClassifier import SupportVectorMachineClassifier
 
 
 def get_data_without_headers(data_set_with_headers):
@@ -144,5 +148,9 @@ def get_classifier(classifier_name):
         classifier = NaiveBayesianMultinominalClassifier()
     elif classifier_name == "DecisionTreeClassifier":
         classifier = DecisionTreeClassifier()
+    elif classifier_name == "LogisticRegressionClassifier":
+        classifier = LogisticRegressionClassifier()
+    elif classifier_name == "SupportVectorMachineClassifier":
+        classifier = SupportVectorMachineClassifier()
 
     return classifier
