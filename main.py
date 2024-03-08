@@ -38,37 +38,43 @@ class GALC:
         # Dodanie rezultatu klasyfikacji globalnej do tablicy agregujacej wyniki
         results_set.append(classification_result)
 
+        return results_set
         # ETAP PODSUMOWANIA WYNIKOW
 
         # Struktura obiektu zwracanego w wyniku klasyfikacji w danym zakresie lokalności:
         # [procent_zakresu_treningowego, średnia dokładność, odchylenie standardowe]
 
-        for i in range(len(results_set)):
-            print("")
-            print(i+1, "Klasyfikacja z przeszukiwaniem obiektow podobnych o procentowym zakresie =", results_set[i][0])
-            print("- Średnia dokladność klasyfikacji:", results_set[i][1])
-            print("- Odchylenie standardowe klasyfikacji:", results_set[i][2])
-            print("")
-
-
 # Glowna metoda, gdzie wprowadzane zostaja parametry klasyfikacji:
 # zbior danych z decyzją (ścieżka), nazwa klasyfikatora, tablica zakresow klasyfikacji lokalnych oraz metryka
 def main():
     classifier = GALC()
+    results = {}
 
-    # data_set = "data\winequality-red_train.csv"
-    # data_set = "data\winequality-red_decision.csv"
-    data_set = "data\winequality-red_decision_v2.csv"
-    # data_set = "data\winequality-red_decision_v2_bigger_version.csv"
+    # Dane do klasyfikacji
+    datasets = ["iodegradation", "gender_voice", "ivehicle", "german_credit_data",
+                "pima-indians-diabetes", "wine", "winequality-red_train", "data-balance", "apple_quality", "cancer-data"]
 
-    # classifier.classify(data_set, "KNeighboursClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(data_set, "NaiveBayesianGaussianClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(data_set, "NaiveBayesianMultinominalClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(data_set, "DecisionTreeClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    # classifier.classify(data_set, "LogisticRegressionClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
-    classifier.classify(data_set, "SupportVectorMachineClassifier", [20, 40, 60, 80], "METRYKA_EUKLIDESOWA")
+    classifier_name = "LogisticRegressionClassifier"
+    scopes = [20, 40, 60, 80]
+    metric = "METRYKA_EUKLIDESOWA"  # Możliwe wartości: "METRYKA_EUKLIDESOWA", "METRYKA_MANHATTAN", "METRYKA_KOSINUSOWA"
 
+    # Przechodzenie przez zbiory danych i klasyfikację
+    for data_set in datasets:
+        print(f'{data_set}')
+        dataset_file = f'data/{data_set}.csv'
+        results_set = classifier.classify(dataset_file, classifier_name, scopes, metric)
+        results[data_set] = results_set
 
+    # Wyświetlanie wyników
+    print(f"Wyniki dla klasyfikatora: {classifier_name} i metryki: {metric}")
+    print("")
+    for result in results:
+        print(f"Wyniki dla zbioru danych: {result}")
+        for i, res in enumerate(results[result]):
+            print(f"{i+1}. Klasyfikacja z przeszukiwaniem obiektów podobnych o procentowym zakresie = {res[0]}")
+            print(f"   - Średnia dokładność klasyfikacji: {res[1]}")
+            print(f"   - Odchylenie standardowe klasyfikacji: {res[2]}")
+        print("----------------------------------------------------------------------------------------------")
 
 
 # Uruchomienie skryptu
